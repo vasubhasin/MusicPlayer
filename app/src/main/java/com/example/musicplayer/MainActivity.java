@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this, "Permission Granted !", Toast.LENGTH_SHORT).show();
                 musicFiles=getAllAudio(this);
+                //hello
 
             }
             else{
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DURATION,
-                MediaStore.Audio.Media.DATA,
+                MediaStore.Audio.Media.DATA,//path
                 MediaStore.Audio.Media.ARTIST
         };
         Cursor cursor=context.getContentResolver().query(uri,projection,
