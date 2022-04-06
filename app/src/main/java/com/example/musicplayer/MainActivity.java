@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
                 Toast.makeText(this, "Permission Granted !", Toast.LENGTH_SHORT).show();
                 musicFiles=getAllAudio(this);
-                //hello
+
 
             }
             else{
