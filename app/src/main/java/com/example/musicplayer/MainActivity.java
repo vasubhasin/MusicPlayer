@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else{
-            Toast.makeText(this, "Permission Granted !", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Storage Permission Granted !", Toast.LENGTH_SHORT).show();
             musicFiles=getAllAudio(this);
         }
     }
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode==REQUEST_CODE)
         {
             if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Permission Granted !", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Storage Permission Granted !", Toast.LENGTH_SHORT).show();
                 musicFiles=getAllAudio(this);
 
 
