@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         {
             ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}
             ,REQUEST_CODE);
+            //hello
         }
         else{
             Toast.makeText(this, "Permission Granted !", Toast.LENGTH_SHORT).show();
