@@ -1,11 +1,14 @@
 package com.example.musicplayer;
 
 import static com.example.musicplayer.MainActivity.musicFiles;
+import static com.example.musicplayer.MainActivity.repeatBoolean;
+import static com.example.musicplayer.MainActivity.shuffleBoolean;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.palette.graphics.Palette;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -16,6 +19,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -25,8 +30,9 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public class PlayerActivity extends AppCompatActivity {
+public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener{
 
     TextView song_name,artist_name,duration_played,duration_total;
     ImageView cover_art,nextBtn,prevBtn,backBtn,shuffleBtn,repeatBtn;
@@ -46,6 +52,7 @@ public class PlayerActivity extends AppCompatActivity {
         getIntenMethod();
         song_name.setText(listSongs.get(position).getTitle());
         artist_name.setText(listSongs.get(position).getArtist());
+        mediaPlayer.setOnCompletionListener(this);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -74,6 +81,36 @@ public class PlayerActivity extends AppCompatActivity {
                     duration_played.setText(formattedTime(mCurrentPosition));
                 }
                 handler.postDelayed(this,1000);
+            }
+        });
+        shuffleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(shuffleBoolean)
+                {
+                    shuffleBoolean = false;
+                    shuffleBtn.setImageResource(R.drawable.ic_shuffle_off);
+                }
+                else
+                {
+                    shuffleBoolean = true;
+                    shuffleBtn.setImageResource(R.drawable.ic_shuffle_on);
+                }
+            }
+        });
+        repeatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(repeatBoolean)
+                {
+                    repeatBoolean = false;
+                    repeatBtn.setImageResource(R.drawable.ic_repeat_off);
+                }
+                else
+                {
+                    repeatBoolean = true;
+                    repeatBtn.setImageResource((R.drawable.ic_repeat_on));
+                }
             }
         });
     }
@@ -152,10 +189,19 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     private void nextBtnClicked() {
-        if(mediaPlayer.isPlaying()){
+        if(mediaPlayer.isPlaying())
+        {
             mediaPlayer.stop();
             mediaPlayer.release();
-            position=((position+1)%listSongs.size());
+            if(shuffleBoolean && !repeatBoolean)
+            {
+                position = getRandom(listSongs.size() -1);
+            }
+            else if(!shuffleBoolean && !repeatBoolean)
+            {
+                position=((position+1)%listSongs.size());
+            }
+            // else position will be position...
             uri=Uri.parse(listSongs.get(position).getPath());
             mediaPlayer=MediaPlayer.create(getApplicationContext(),uri);
             metaData(uri);
@@ -172,13 +218,21 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this,1000);
                 }
             });
-            playPauseBtn.setImageResource(R.drawable.ic_pause);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_pause);
             mediaPlayer.start();
         }
         else{
             mediaPlayer.stop();
             mediaPlayer.release();
-            position=((position+1)%listSongs.size());
+            if(shuffleBoolean && !repeatBoolean)
+            {
+                position = getRandom(listSongs.size() -1);
+            }
+            else if(!shuffleBoolean && !repeatBoolean)
+            {
+                position=((position+1)%listSongs.size());
+            }
             uri=Uri.parse(listSongs.get(position).getPath());
             mediaPlayer=MediaPlayer.create(getApplicationContext(),uri);
             metaData(uri);
@@ -195,8 +249,14 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this,1000);
                 }
             });
-            playPauseBtn.setImageResource(R.drawable.ic_play);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_play);
         }
+    }
+
+    private int getRandom(int i) {
+        Random random = new Random();
+        return random.nextInt(i + 1);
     }
 
     private void prevThreadBtn(){
@@ -219,7 +279,15 @@ public class PlayerActivity extends AppCompatActivity {
         if(mediaPlayer.isPlaying()){
             mediaPlayer.stop();
             mediaPlayer.release();
-            position=((position-1)<0 ? (listSongs.size()-1): (position-1));
+            if(shuffleBoolean && !repeatBoolean)
+            {
+                position = getRandom(listSongs.size() -1);
+            }
+            else if(!shuffleBoolean && !repeatBoolean)
+            {
+                position=((position-1)<0 ? (listSongs.size()-1): (position-1));
+            }
+
             uri=Uri.parse(listSongs.get(position).getPath());
             mediaPlayer=MediaPlayer.create(getApplicationContext(),uri);
             metaData(uri);
@@ -236,13 +304,21 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this,1000);
                 }
             });
-            playPauseBtn.setImageResource(R.drawable.ic_pause);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_pause);
             mediaPlayer.start();
         }
         else{
             mediaPlayer.stop();
             mediaPlayer.release();
-            position=((position-1)<0 ? (listSongs.size()-1): (position-1));
+            if(shuffleBoolean && !repeatBoolean)
+            {
+                position = getRandom(listSongs.size() -1);
+            }
+            else if(!shuffleBoolean && !repeatBoolean)
+            {
+                position=((position-1)<0 ? (listSongs.size()-1): (position-1));
+            }
             uri=Uri.parse(listSongs.get(position).getPath());
             mediaPlayer=MediaPlayer.create(getApplicationContext(),uri);
             metaData(uri);
@@ -259,7 +335,8 @@ public class PlayerActivity extends AppCompatActivity {
                     handler.postDelayed(this,1000);
                 }
             });
-            playPauseBtn.setImageResource(R.drawable.ic_play);
+            mediaPlayer.setOnCompletionListener(this);
+            playPauseBtn.setBackgroundResource(R.drawable.ic_play);
         }
     }
 
@@ -323,8 +400,11 @@ public class PlayerActivity extends AppCompatActivity {
         byte[] art =retriever.getEmbeddedPicture();
         Bitmap bitmap;
         if (art!= null){
-            Glide.with(this).asBitmap().load(art).into(cover_art);
+
+
             bitmap= BitmapFactory.decodeByteArray(art,0,art.length);
+            ImageAnimation(this, cover_art, bitmap);
+           
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(@Nullable Palette palette) {
@@ -371,5 +451,58 @@ public class PlayerActivity extends AppCompatActivity {
             artist_name.setTextColor(Color.DKGRAY);
         }
 
+    }
+    public void ImageAnimation(final Context context, final ImageView imageview, final Bitmap bitmap)
+    {
+
+        Animation animOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
+        final Animation animIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+        animOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+              Glide.with(context).load(bitmap).into(imageview);
+              animIn.setAnimationListener(new Animation.AnimationListener() {
+                  @Override
+                  public void onAnimationStart(Animation animation) {
+
+                  }
+
+                  @Override
+                  public void onAnimationEnd(Animation animation) {
+
+                  }
+
+                  @Override
+                  public void onAnimationRepeat(Animation animation) {
+
+                  }
+              });
+              imageview.startAnimation(animIn);
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        imageview.startAnimation(animOut);
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        nextBtnClicked();
+        if(mediaPlayer != null)
+        {
+            mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
+            mediaPlayer.start();
+            mediaPlayer.setOnCompletionListener(this);
+
+        }
     }
 }
