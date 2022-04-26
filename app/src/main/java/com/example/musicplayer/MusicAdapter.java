@@ -79,6 +79,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MyViewHolder
             }
         });
     }
+
     private void deleteFile(int position, View v) {
         Uri contenturi = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 Long.parseLong(mFiles.get(position).getId()));  // content://
