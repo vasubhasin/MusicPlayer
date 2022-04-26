@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             else{
                 ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}
                         ,REQUEST_CODE);
-                //fff
+
             }
         }
     }

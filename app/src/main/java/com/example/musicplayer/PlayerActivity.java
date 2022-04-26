@@ -401,10 +401,9 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
         Bitmap bitmap;
         if (art!= null){
 
-
             bitmap= BitmapFactory.decodeByteArray(art,0,art.length);
             ImageAnimation(this, cover_art, bitmap);
-           
+
             Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
                 @Override
                 public void onGenerated(@Nullable Palette palette) {
@@ -495,7 +494,7 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
     }
 
     @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
+    public void onCompletion(MediaPlayer mp) {
         nextBtnClicked();
         if(mediaPlayer != null)
         {
