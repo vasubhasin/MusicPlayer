@@ -1,6 +1,7 @@
 package com.example.musicplayer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,14 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyHolder>{
         else{
             Glide.with(mContext).load(R.drawable.defimage).into(holder.album_image);
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, AlbumDetails.class);
+                intent.putExtra("albumName", albumFiles.get(position).getAlbum());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
