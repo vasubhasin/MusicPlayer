@@ -23,5 +23,4 @@
         android:id="@+id/recyclerView"
         android:layout_below="@+id/albumPhoto"/>
 
-
 </RelativeLayout>

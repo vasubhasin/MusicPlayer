@@ -1,5 +1,6 @@
 package com.example.musicplayer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaMetadataRetriever;
@@ -34,7 +35,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.MyHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.album_name.setText(albumFiles.get(position).getAlbum());
         byte[]image=getAlbumArt(albumFiles.get(position).getPath());
         if(image!=null){

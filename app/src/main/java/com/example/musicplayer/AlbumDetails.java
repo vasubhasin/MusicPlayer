@@ -19,31 +19,27 @@ public class AlbumDetails extends AppCompatActivity {
     RecyclerView recyclerView;
     ImageView albumPhoto;
     String albumName;
-    ArrayList<MusicFiles>albumSongs = new ArrayList<>();
+    ArrayList<MusicFiles> albumSongs=new ArrayList<>();
     AlbumDetailsAdapter albumDetailsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_details);
-        recyclerView = findViewById(R.id.recyclerView);
-        albumPhoto = findViewById(R.id.albumPhoto);
-        albumName = getIntent().getStringExtra("albumName");
-        int j = 0;
-        for(int i = 0; i < musicFiles.size(); i++)
-        {
-            if(albumName.equals(musicFiles.get(i).getAlbum()))
-            {
-                albumSongs.add(j, musicFiles.get(i));
+        recyclerView=findViewById(R.id.recyclerView);
+        albumPhoto=findViewById(R.id.albumPhoto);
+        albumName=getIntent().getStringExtra("albumName");
+        int j=0;
+        for(int i=0;i<musicFiles.size();i++){
+            if(albumName.equals(musicFiles.get(i).getAlbum())){
+                albumSongs.add(j,musicFiles.get(i));
                 j++;
             }
         }
-        byte[] image = getAlbumArt(albumSongs.get(0).getPath());
-        if(image != null)
-        {
+        byte[] image=getAlbumArt(albumSongs.get(0).getPath());
+        if(image!=null){
             Glide.with(this).load(image).into(albumPhoto);
         }
-        else
-        {
+        else {
             Glide.with(this).load(R.drawable.defimage).into(albumPhoto);
         }
     }
@@ -51,11 +47,10 @@ public class AlbumDetails extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!(albumSongs.size() < 1))
-        {
-            albumDetailsAdapter = new AlbumDetailsAdapter(this, albumSongs);
+        if(!(albumSongs.size()<1)){
+            albumDetailsAdapter=new AlbumDetailsAdapter(this,albumSongs);
             recyclerView.setAdapter(albumDetailsAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+            recyclerView.setLayoutManager(new LinearLayoutManager(this,RecyclerView.VERTICAL,false));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.musicplayer;
 
+import static com.example.musicplayer.AlbumDetailsAdapter.albumFiles;
 import static com.example.musicplayer.MainActivity.musicFiles;
 import static com.example.musicplayer.MainActivity.repeatBoolean;
 import static com.example.musicplayer.MainActivity.shuffleBoolean;
@@ -357,7 +358,14 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
 
     private void getIntenMethod() {
         position=getIntent().getIntExtra("position",-1);
-        listSongs=musicFiles;
+        String sender=getIntent().getStringExtra("sender");
+        if(sender !=null && sender.equals("albumDetails")){
+            listSongs=albumFiles;
+        }
+        else{
+            listSongs=musicFiles;
+        }
+
         if(listSongs!=null){
             playPauseBtn.setImageResource(R.drawable.ic_pause);
             uri=Uri.parse(listSongs.get(position).getPath());
