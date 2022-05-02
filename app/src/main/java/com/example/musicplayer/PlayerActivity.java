@@ -4,6 +4,7 @@ import static com.example.musicplayer.AlbumDetailsAdapter.albumFiles;
 import static com.example.musicplayer.MainActivity.musicFiles;
 import static com.example.musicplayer.MainActivity.repeatBoolean;
 import static com.example.musicplayer.MainActivity.shuffleBoolean;
+import static com.example.musicplayer.MusicAdapter.mFiles;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -363,7 +364,7 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnC
             listSongs=albumFiles;
         }
         else{
-            listSongs=musicFiles;
+            listSongs=mFiles;
         }
 
         if(listSongs!=null){
