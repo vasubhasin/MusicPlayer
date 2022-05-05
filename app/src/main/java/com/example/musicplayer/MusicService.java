@@ -34,7 +34,6 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         return mBinder;
     }
 
-
     public class MyBinder extends Binder {
         MusicService getService() {
             return MusicService.this;
@@ -43,7 +42,7 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        int myPosition = intent.getIntExtra(" servicePosition", -1);
+        int myPosition = intent.getIntExtra("servicePosition",-1);
         if(myPosition != -1){
             playMedia(myPosition);
         }
@@ -53,15 +52,15 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
     private void playMedia(int StartPosition) {
         musicFiles = listSongs;
         position = StartPosition;
-        if(mediaPlayer != null){
+        if (mediaPlayer!= null){
             mediaPlayer.stop();
             mediaPlayer.release();
-            if(musicFiles != null){
+            if (musicFiles != null){
                 createMediaPlayer(position);
                 mediaPlayer.start();
             }
         }
-        else{
+        else {
             createMediaPlayer(position);
             mediaPlayer.start();
         }
@@ -71,26 +70,26 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
         mediaPlayer.start();
     }
     boolean isPlaying() {
-        return mediaPlayer.isPlaying();
+        return  mediaPlayer.isPlaying();
     }
     void stop(){
         mediaPlayer.stop();
     }
-    void release(){
+    void  release(){
         mediaPlayer.release();
     }
-    int getDuration(){
+    int  getDuration(){
         return mediaPlayer.getDuration();
     }
     void seekTo(int position){
         mediaPlayer.seekTo(position);
     }
-   int getCurrentPosition(){
+    int getCurrentPosition(){
         return mediaPlayer.getCurrentPosition();
-   }
+    }
     void createMediaPlayer(int position){
         uri = Uri.parse(musicFiles.get(position).getPath());
-        mediaPlayer = MediaPlayer.create(getBaseContext(), uri);
+        mediaPlayer= MediaPlayer.create(getBaseContext(), uri);
     }
     void pause(){
         mediaPlayer.pause();
@@ -101,10 +100,9 @@ public class MusicService extends Service implements MediaPlayer.OnCompletionLis
 
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-        if(actionPlaying != null){
+        if(actionPlaying != null) {
             actionPlaying.nextBtnClicked();
         }
-
         createMediaPlayer(position);
         mediaPlayer.start();
         OnCompleted();
