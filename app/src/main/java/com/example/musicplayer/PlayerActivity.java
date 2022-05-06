@@ -1,6 +1,7 @@
 package com.example.musicplayer;
 
 import static com.example.musicplayer.AlbumDetailsAdapter.albumFiles;
+import static com.example.musicplayer.ApplicationClass.ACTION_NEXT;
 import static com.example.musicplayer.ApplicationClass.ACTION_PLAY;
 import static com.example.musicplayer.ApplicationClass.ACTION_PREVIOUS;
 import static com.example.musicplayer.ApplicationClass.CHANNEL_ID_2;
@@ -527,6 +528,7 @@ public class PlayerActivity extends AppCompatActivity
     public void onServiceConnected(ComponentName name, IBinder service) {
         MusicService.MyBinder myBinder = (MusicService.MyBinder) service;
         musicService = myBinder.getService();
+        musicService.setCallBack(this);
         Toast.makeText(this, "Connected" + musicService, Toast.LENGTH_SHORT).show();
         seekBar.setMax(musicService.getDuration()/1000);
         metaData(uri);
@@ -547,10 +549,10 @@ public class PlayerActivity extends AppCompatActivity
         PendingIntent prevPending = PendingIntent.getBroadcast(this,0,prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         Intent pauseIntent = new Intent(this,NotificationReceiver.class).setAction(ACTION_PLAY);
         PendingIntent pausePending = PendingIntent.getBroadcast(this,0,pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Intent nextIntent = new Intent(this,NotificationReceiver.class).setAction(ACTION_PREVIOUS);
+        Intent nextIntent = new Intent(this,NotificationReceiver.class).setAction(ACTION_NEXT);
         PendingIntent nextPending = PendingIntent.getBroadcast(this,0,nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         byte[] picture = null;
-        picture = getAlbumArt(musicFiles.get(position).getPath());
+        picture = getAlbumArt(listSongs.get(position).getPath());
         Bitmap thumb = null;
         if (picture != null){
             thumb = BitmapFactory.decodeByteArray(picture,0,picture.length);
@@ -561,8 +563,8 @@ public class PlayerActivity extends AppCompatActivity
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID_2)
                 .setSmallIcon(playPauseBtn)
                 .setLargeIcon(thumb)
-                .setContentTitle(musicFiles.get(position).getTitle())
-                .setContentText(musicFiles.get(position).getArtist())
+                .setContentTitle(listSongs.get(position).getTitle())
+                .setContentText(listSongs.get(position).getArtist())
                 .addAction(R.drawable.ic_skip_previous,"Previous",prevPending)
                 .addAction(playPauseBtn,"Pause",pausePending)
                 .addAction(R.drawable.ic_skip_next,"Next",nextPending)
