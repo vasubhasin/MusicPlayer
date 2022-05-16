@@ -163,7 +163,7 @@ public class NowPlayingFragmentBottom extends Fragment implements ServiceConnect
     }
 
     @Override
-    public void onServiceDisconnected(ComponentName componentName) {
+    public void onServiceDisconnected(ComponentName name) {
         musicService=null;
 
     }
